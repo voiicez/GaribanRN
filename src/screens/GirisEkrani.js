@@ -1,15 +1,15 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet,SafeAreaView } from 'react-native';
 
 const GirisEkrani = ({ navigation }) => {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Gariban</Text>
       <Text style={styles.description}>Köydeki en zengin gariban olma mücadelesi!</Text>
       <TouchableOpacity onPress={() => navigation.navigate('OyuncuEkrani')} style={styles.playButton}>
         <Text style={styles.playButtonText}>Oyna</Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 

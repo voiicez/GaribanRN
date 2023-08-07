@@ -9,6 +9,9 @@ import PlayerTurnScreen from './src/screens/PlayerTurnScreen';
 import DayPhaseScreen from './src/screens/DayPhase';
 import VotingPhaseScreen from './src/screens/VotingPhaseScreen';
 import PlayerDetailScreen from './src/screens/PlayerDetailScreen';
+import EliminationScreen from './src/screens/EliminationScreen';
+import CountdownScreen from './src/screens/CountDownScreen';
+import MarketScreen from './src/screens/MarketScreen';
 
 
 
@@ -23,11 +26,15 @@ export default function App() {
           <Stack.Screen name="Giris" component={GirisEkrani} />
           <Stack.Screen name="OyuncuEkrani" component={OyuncuEkrani} />
           <Stack.Screen name="Ready" component={ReadyScreen} />
-          <Stack.Screen name="Night" component={NightPhaseScreen} />
-          <Stack.Screen name="PlayerTurn" component={PlayerTurnScreen} />
-          <Stack.Screen name="PlayerDetail" component={PlayerDetailScreen} />
-          <Stack.Screen name="Day" component={DayPhaseScreen} />
-          <Stack.Screen name="Vote" component={VotingPhaseScreen} />
+          <Stack.Screen name="Night" component={NightPhaseScreen} options={{ headerShown:false,gestureEnabled:false}} />
+          <Stack.Screen name="PlayerTurn" component={PlayerTurnScreen} options={{ headerShown:false,gestureEnabled:false}} />
+          <Stack.Screen name="Market" component={MarketScreen} options={{ headerShown:true,gestureEnabled:true}} />
+          <Stack.Screen name="PlayerDetail" component={PlayerDetailScreen} options={{ headerShown:false,gestureEnabled:false}} />
+          <Stack.Screen name="Day" component={DayPhaseScreen} options={{ headerShown:false,gestureEnabled:false}} />
+          
+          <Stack.Screen name="CountDown" component={CountdownScreen} options={{ headerShown:false,gestureEnabled:false}} />
+          <Stack.Screen name="Vote" component={VotingPhaseScreen} options={{ headerShown:false,gestureEnabled:false}} />
+          <Stack.Screen name="Elimination" component={EliminationScreen} options={{ headerShown:false,gestureEnabled:false}} />
           
           
           

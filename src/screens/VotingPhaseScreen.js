@@ -1,33 +1,37 @@
 import React, { useState } from 'react';
 import { View, Text, Button } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-const VotingPhaseScreen = ({ route, navigation }) => {
-    const [votes, setVotes] = useState({});
-    const roles = route.params.roles;
-  
-    const castVote = (playerName) => {
-      setVotes({ ...votes, [playerName]: (votes[playerName] || 0) + 1 });
-    };
-  
-    const finishVoting = () => {
-      // Find the player with the most votes
-      const eliminatedPlayer = Object.keys(votes).reduce((a, b) => (votes[a] > votes[b] ? a : b));
-      // Remove the eliminated player from the roles
-      const remainingRoles = roles.filter((player) => player.name !== eliminatedPlayer);
-      // Navigate to the next phase or screen, passing the remaining roles
-      navigation.navigate('NextPhase', { roles: remainingRoles });
-    };
-  
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text style={{ fontSize: 30, marginBottom: 20 }}>Voting Phase</Text>
-        {roles.map((player, index) => (
-          <Button key={index} title={`Vote ${player.name}`} onPress={() => castVote(player.name)} />
-        ))}
-        <Button title="Finish Voting" onPress={finishVoting} />
-      </View>
-    );
+const VotingPhaseScreen = ({ navigation, route }) => {
+  const [votes, setVotes] = useState(route.params.roles.map(() => 0));
+  const roles = route.params.roles;
+
+  const castVote = (index) => {
+    const newVotes = [...votes];
+    newVotes[index]++;
+    setVotes(newVotes);
   };
-  
-  export default VotingPhaseScreen;
-  
+
+  const endVoting = () => {
+    const maxVotes = Math.max(...votes);
+    const eliminatedIndex = votes.indexOf(maxVotes);
+    const eliminatedPlayer = roles[eliminatedIndex];
+    // Navigate to the elimination screen with the eliminated player
+    navigation.navigate('Elimination', { eliminatedPlayer, roles: roles.filter((_, i) => i !== eliminatedIndex) });
+  };
+
+  return (
+    <SafeAreaView style={{ flex: 1, padding: 20 }}>
+      <Text style={{ fontSize: 20, marginBottom: 10 }}>Voting Phase</Text>
+      {roles.map((player, index) => (
+        <View key={index} style={{ marginBottom: 10 }}>
+          <Text style={{ fontSize: 18 }}>{player.name}: {votes[index]} votes</Text>
+          <Button title="Vote" onPress={() => castVote(index)} />
+        </View>
+      ))}
+      <Button title="End Voting" onPress={endVoting} />
+    </SafeAreaView>
+  );
+};
+
+export default VotingPhaseScreen;

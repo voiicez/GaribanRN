@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button } from 'react-native';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 const ReadyScreen = ({ navigation, route }) => {
   const [roles, setRoles] = useState([]);
 
@@ -27,20 +27,21 @@ const ReadyScreen = ({ navigation, route }) => {
     const assignedRoles = shuffledPlayers.map((player, index) => ({
       name: player,
       role: roles[index],
+      coins: 30,
     }));
 
     setRoles(assignedRoles);
   };
 
   return (
-    <View style={{ flex: 1, padding: 20 }}>
+    <SafeAreaView style={{ flex: 1, padding: 20 }}>
       <Text style={{ fontSize: 20, marginBottom: 10 }}>Game is Ready!</Text>
       <Text style={{ fontSize: 18, marginBottom: 20 }}>Introductions and game settings go here.</Text>
       {roles.map((player, index) => (
         <Text key={index} style={{ fontSize: 18, marginBottom: 5 }}>{player.name}: {player.role}</Text>
       ))}
       <Button title="Ready" onPress={() => navigation.navigate('Night', { roles })} />
-    </View>
+    </SafeAreaView>
   );
 };
 

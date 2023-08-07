@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, Button } from 'react-native';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 const OyuncuEkrani = ({navigation}) => {
   const [playerName, setPlayerName] = useState('');
   const [players, setPlayers] = useState([]);
@@ -20,7 +20,7 @@ const OyuncuEkrani = ({navigation}) => {
 
 
   return (
-    <View style={{ flex: 1, padding: 20 }}>
+    <SafeAreaView style={{ flex: 1 }}>
       <Text style={{ fontSize: 20, marginBottom: 10 }}>Add Players</Text>
       <View style={{ flexDirection: 'row', marginBottom: 20 }}>
         <TextInput
@@ -52,7 +52,7 @@ const OyuncuEkrani = ({navigation}) => {
           ))}
         </View>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -1,18 +1,32 @@
 import React from 'react';
 import { View, Text, Button } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const PlayerDetailScreen = ({ navigation, route }) => {
   const player = route.params.player;
   const takeAction = route.params.takeAction;
   const passAction = route.params.passAction;
+  const nextPlayer = route.params.nextPlayer;
+  const roles=route.params.roles;
+  const handlePurchase = route.params.handlePurchase;
+
+// PlayerDetailScreen
+const goToMarket = () => {
+  navigation.navigate('Market', { player, onPurchase: nextPlayer,roles });
+};
+
+
+ 
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text style={{ fontSize: 30, marginBottom: 20 }}>{player.name}</Text>
       <Text style={{ fontSize: 20, marginBottom: 20 }}>Role: {player.role}</Text>
-      <Button title="Take Action" onPress={() => { navigation.goBack(); takeAction();}} />
-      <Button title="Pass" onPress={() => { navigation.goBack();passAction();  }} />
-    </View>
+      <Text style={{ fontSize: 20, marginBottom: 20 }}>Coin: {player.coins}</Text>
+      <Button title="Take Action" onPress={() => { navigation.goBack(); takeAction(); }} />
+      <Button title="Pass" onPress={() => { navigation.goBack(); passAction(); }} />
+      <Button title="Buy Something" onPress={goToMarket} />
+    </SafeAreaView>
   );
 };
 
