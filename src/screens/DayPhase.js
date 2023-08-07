@@ -10,7 +10,7 @@ const DayPhaseScreen = ({ route, navigation }) => {
         <Text style={{ fontSize: 30, marginBottom: 20 }}>Day Phase</Text>
         <Text style={{ fontSize: 18, marginBottom: 20 }}>What happened last night:</Text>
         {actions.map((action, index) => (
-          <Text key={index} style={{ fontSize: 18, marginBottom: 5 }}>{action.player.name}</Text>
+          <Text key={index} style={{ fontSize: 18, marginBottom: 5 }}>{action.player.role}</Text>
         ))}
         <Button title="Ready" onPress={() => navigation.navigate('CountDown', { actions,roles })} />
       </SafeAreaView>

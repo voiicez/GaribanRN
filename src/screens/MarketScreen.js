@@ -37,7 +37,7 @@ const MarketScreen = ({ navigation, route }) => {
       onPurchase(item);
       
       
-      console.log('Navigating with roles:', roles);
+     
       navigation.navigate('PlayerTurn', { roles });
     } else {
       // Handle insufficient funds
