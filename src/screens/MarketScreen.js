@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const MarketScreen = ({ navigation, route }) => {
@@ -58,7 +58,7 @@ const robberyOccurred=route.params.robberyOccurred;
       console.log("MarketScreen PlayerTurn screen ' e gönderiyor.")
       
     } else {
-      // Handle insufficient funds
+      Alert.alert("Para yetmiyor.");
     }
   };
   

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { rolesConfig } from '../conf/rolesConfig';
 import {useState} from 'react';
@@ -42,6 +42,7 @@ const handleRobAction = () => {
  const stolenCoins = robbedPlayer.coins;
  robbedPlayer.coins = 0;
  player.coins += stolenCoins;
+ player.hasMaymuncuk=false;
  const updatedRoles = [...roles];
  updatedRoles[robbedPlayerIndex] = robbedPlayer;
  updatedRoles[currentPlayerIndex] = player;
@@ -49,12 +50,12 @@ const handleRobAction = () => {
     } 
     else 
     {
-      console.log('Cannot rob without a Maymuncuk.');
+      Alert.alert('Cannot rob without a Maymuncuk.');
     }
   } 
   else 
   {
-    console.log('No player selected to rob.');
+    Alert.alert('No player selected to rob.');
   }
 };
  
