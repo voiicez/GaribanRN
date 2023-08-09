@@ -36,10 +36,8 @@ const ReadyScreen = ({ navigation, route }) => {
   return (
     <SafeAreaView style={{ flex: 1, padding: 20 }}>
       <Text style={{ fontSize: 20, marginBottom: 10 }}>Game is Ready!</Text>
-      <Text style={{ fontSize: 18, marginBottom: 20 }}>Introductions and game settings go here.</Text>
-      {roles.map((player, index) => (
-        <Text key={index} style={{ fontSize: 18, marginBottom: 5 }}>{player.name}: {player.role}</Text>
-      ))}
+      <Text style={{ fontSize: 18, marginBottom: 20 }}>Hazır a bastığında oyun başlayacak. Oyun başladıktan sonra telefonu 
+      ismi yazan oyuncuya verin.</Text>
       <Button title="Ready" onPress={() => navigation.navigate('Night', { roles })} />
     </SafeAreaView>
   );

@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 const VotingPhaseScreen = ({ navigation, route }) => {
   const [votes, setVotes] = useState(route.params.roles.map(() => 0));
   const roles = route.params.roles;
-
+  const updatedPlayer=route.params.updatedPlayer;
   const castVote = (index) => {
     const newVotes = [...votes];
     newVotes[index]++;
@@ -17,7 +17,7 @@ const VotingPhaseScreen = ({ navigation, route }) => {
     const eliminatedIndex = votes.indexOf(maxVotes);
     const eliminatedPlayer = roles[eliminatedIndex];
     // Navigate to the elimination screen with the eliminated player
-    navigation.navigate('Elimination', { eliminatedPlayer, roles: roles.filter((_, i) => i !== eliminatedIndex) });
+    navigation.navigate('Elimination', { eliminatedPlayer, roles: roles.filter((_, i) => i !== eliminatedIndex),updatedPlayer });
   };
 
   return (

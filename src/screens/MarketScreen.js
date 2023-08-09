@@ -5,12 +5,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 const MarketScreen = ({ navigation, route }) => {
   const player = route.params.player;
   const onPurchase = route.params.onPurchase;
-  const roles = route.params.roles; // Make sure to receive the roles from the previous screen
-
+  const roles = route.params.roles;
+  const currentPlayerIndex=route.params.currentPlayerIndex;
+  const actions=route.params.actions;
+const robberyOccurred=route.params.robberyOccurred;
   const availableRoles = [
-    { name: 'Büyücü', cost: 30 },
-    { name: 'Polis', cost: 30 },
-    { name: 'Baytar', cost: 30 },
+    { name: 'Hırsız', cost: 30 },
+    { name: 'Katil', cost: 30 },
+    { name: 'Gariban', cost: 30 },
   ];
 
   const otherItems = [
@@ -20,29 +22,49 @@ const MarketScreen = ({ navigation, route }) => {
     { name: 'Kurbağa Sivilcesi', cost: 10 },
     { name: 'Şeker Reçeli', cost: 100 },
   ];
-
+  const allTurnsUsed = roles.every((player) => player.turnCompleted);
+  const isLastPlayerTurn = currentPlayerIndex === roles.length - 1;
   const purchaseItem = (item) => {
     if (player.coins >= item.cost) {
-      // Update player's coins
-      player.coins -= item.cost;
+      // Make a copy of the player object
+      const updatedPlayer = { ...player };
+  
+      // Update the player's coins
+      updatedPlayer.coins -= item.cost;
   
       // Handle specific item effects
-      if (availableRoles.includes(item)) {
-        player.role = item.name;
-      } else if (item.name === 'Ticket') {
-        // Handle the ticket purchase here (e.g., update player's inventory or apply specific effects)
+      if (updatedPlayer.role === 'Gariban' && availableRoles.includes(item)) {
+        updatedPlayer.role = item.name; // Only update the role if purchasing a new role
+      }
+       if (item.name === 'Maymuncuk') {
+        
+        updatedPlayer.hasMaymuncuk=true;
+        console.log('Updated player after purchasing Maymuncuk:', updatedPlayer);
       }
   
+      // Update the roles array with the modified player object
+      const updatedRoles = [...roles];
+      updatedRoles[roles.findIndex(p => p.name === updatedPlayer.name)] = updatedPlayer;
+  
       // Proceed to the next player's turn
-      onPurchase(item);
+      onPurchase(item,updatedPlayer);
+      if(isLastPlayerTurn){
+        navigation.navigate('Day', { actions, roles:updatedRoles,robberyOccurred,updatedPlayer });
+      }
+      else{
+        navigation.navigate('PlayerTurn', { roles: updatedRoles }); // Pass the updated roles array
+      }
+      console.log("onPurchase çalıştı.");
+      console.log("MarketScreen PlayerTurn screen ' e gönderiyor.")
       
-      
-     
-      navigation.navigate('PlayerTurn', { roles });
     } else {
       // Handle insufficient funds
     }
   };
+  
+  
+  
+  
 
   return (
     <SafeAreaView style={{ flex: 1, padding: 20 }}>

@@ -4,6 +4,7 @@ import { View, Text, Button,SafeAreaView } from 'react-native';
 const CountdownScreen = ({ navigation, route }) => {
   const [timeRemaining, setTimeRemaining] = useState(180); // 180 seconds = 3 minutes
   const roles = route.params.roles;
+  const updatedPlayer=route.params.updatedPlayer;
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -12,14 +13,14 @@ const CountdownScreen = ({ navigation, route }) => {
 
     if (timeRemaining <= 0) {
       clearInterval(timer);
-      navigation.navigate('Vote', { roles });
+      navigation.navigate('Vote', { roles,updatedPlayer });
     }
 
     return () => clearInterval(timer); // Clear the timer when the component is unmounted
-  }, [timeRemaining, navigation, roles]);
+  }, [timeRemaining, navigation, roles,updatedPlayer]);
 
   const skipCountdown = () => {
-    navigation.navigate('Vote', { roles });
+    navigation.navigate('Vote', { roles,updatedPlayer });
   };
 
   return (
