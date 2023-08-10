@@ -3,8 +3,7 @@ import { View, Text, Button, Alert,ImageBackground,StyleSheet } from 'react-nati
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { rolesConfig } from '../conf/rolesConfig';
 import {useState} from 'react';
-import { Picker } from '@react-native-picker/picker';
-import { yellow100 } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
+import { SelectList } from 'react-native-dropdown-select-list'
 const PlayerDetailScreen = ({ navigation, route }) => {
   const player = route.params.player;
   const takeAction = route.params.takeAction;
@@ -30,71 +29,84 @@ const handlePurchaseAndTakeAction = (item) => {
   handlePurchase(item); // Handle the purchase
  
 };
-console.log('Player in PlayerDetailScreen:', player);
-const handleRobAction = () => {
-  console.log('Has Maymuncuk:', player.hasMaymuncuk);
-  if (selectedPlayerToRob) {
+const takeActions = (selectedPlayerToRob) => {
+  if (player.role === 'Hırsız') {
+    console.log(selectedPlayerToRob)
+    if (selectedPlayerToRob) {
    
-    if (player.hasMaymuncuk)
-     {
- 
- const robbedPlayerIndex = roles.findIndex(p => p.name === selectedPlayerToRob);
- const robbedPlayer = roles[robbedPlayerIndex];
- const stolenCoins = robbedPlayer.coins;
- robbedPlayer.coins = 0;
- player.coins += stolenCoins;
- player.hasMaymuncuk=false;
- const updatedRoles = [...roles];
- updatedRoles[robbedPlayerIndex] = robbedPlayer;
- updatedRoles[currentPlayerIndex] = player;
- console.log(`Someone is Robbed, ${selectedPlayerToRob}. Stolen coins: ${stolenCoins}`);
+      if (player.hasMaymuncuk)
+       {
+   
+   const robbedPlayerIndex = roles.findIndex(p => p.name === selectedPlayerToRob);
+   const robbedPlayer = roles[robbedPlayerIndex];
+   const stolenCoins = robbedPlayer.coins;
+   robbedPlayer.coins = 0;
+   player.coins += stolenCoins;
+   player.hasMaymuncuk=false;
+   const updatedRoles = [...roles];
+   updatedRoles[robbedPlayerIndex] = robbedPlayer;
+   updatedRoles[currentPlayerIndex] = player;
+   navigation.goBack();
+   takeAction();
+   
+   console.log(`Someone is Robbed, ${selectedPlayerToRob}. Stolen coins: ${stolenCoins}`);
+      } 
+      else 
+      {
+        Alert.alert('Maymuncuk olmadan soygun yapılamaz.');
+        player.hasMaymuncuk=true;
+      }
     } 
     else 
     {
-      Alert.alert('Cannot rob without a Maymuncuk.');
+      Alert.alert('Aksiyonu uygulayacak birini seçmelisin.');
     }
-  } 
-  else 
-  {
-    Alert.alert('No player selected to rob.');
+  }else{
+    console.log("Hırsız Değilsin.")
   }
 };
+  
+
+
 const hirsizBackground = require('../assets/images/hirsizBg.png');
 const garibanBackground = require('../assets/images/garibanBg.jpg');
+
 const renderContent = () => (
-  
-    <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+  <SafeAreaView style={styles.container}>
     <Text style={styles.playerName}>{player.name}</Text>
     <Text style={styles.coinText}>{player.coins}</Text>
     <View style={styles.actionContainer}>
-    {player.role === 'Hırsız' ? (
-      <View>
-        
-        <Picker
-          selectedValue={selectedPlayerToRob}
-          onValueChange={(itemValue) => setSelectedPlayerToRob(itemValue)}
-          
-        >
-          {otherPlayers.map((p, index) => (
-            <Picker.Item key={index} label={p.name} value={p.name} />
-          ))}
-        </Picker>
-        <Text>Soymak istediğiniz oyuncuyu listeden seçin.</Text>
-        <Button title="Rob" onPress={handleRobAction} />
+      {player.role === 'Hırsız' ? (
        
-      </View>
-    ) : (
-      player.role !== 'Gariban' && (
-        <Button title="Take Action" onPress={() => { navigation.goBack(); takeAction(); }} />
-      )
-    )}
-    <Button title="Pass" onPress={() => { navigation.goBack(); passAction(); }} />
-    <Button title="Buy Something" onPress={goToMarket} />
-    <Text style={{ fontSize: 16, marginTop: 10 }}>{roleConfig?.description}</Text>
+       <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start',zIndex:10 }}>
+       <View> 
+         <SelectList
+           setSelected={(val) => setSelectedPlayerToRob(val)}
+           data={otherPlayers.map(p => ({ key: p.name, value: p.name }))}
+           save="value"
+           dropdownStyles={styles.dropdown}
+           search={false}
+           placeholder='Kurbanı seçin.'
+           
+         />
+       </View>
+       
+     </View>
+          
+        
+      ) : null} 
+        {player.role !== 'Gariban' && (
+          <Button title="Aksiyon Al" onPress={() => { takeActions(selectedPlayerToRob); }} />
+        )}
+      
+      <Button title="Pass" onPress={() => { navigation.goBack(); passAction(); }} />
+      <Button title="Buy Something" onPress={goToMarket} />
+     
+      <Text style={styles.description}>{roleConfig?.description}</Text>
     </View>
   </SafeAreaView>
-  
 );
+
 if (player.role === 'Hırsız') {
   return (
     <ImageBackground source={hirsizBackground} resizeMode="contain" style={{ flex: 1 }}>
@@ -135,13 +147,24 @@ const styles = StyleSheet.create({
     
   },
   actionContainer: {
-    marginTop: 350, // Adjust this value to position the UI elements below the square card
+    marginTop: 500, // Adjust this value to position the UI elements below the square card
     alignItems: 'center',
+    marginBottom:50,
+    
   },
   description: {
     fontSize: 16,
     marginTop: 10,
   },
+  robTextAbove:{
+    fontSize:18,
+  },
+  dropdown:{
+    backgroundColor:'gray',
+    alignItems:'center',
+    
+    
+  }
  
 });
 export default PlayerDetailScreen;

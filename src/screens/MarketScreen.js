@@ -26,13 +26,9 @@ const robberyOccurred=route.params.robberyOccurred;
   const isLastPlayerTurn = currentPlayerIndex === roles.length - 1;
   const purchaseItem = (item) => {
     if (player.coins >= item.cost) {
-      // Make a copy of the player object
       const updatedPlayer = { ...player };
-  
-      // Update the player's coins
       updatedPlayer.coins -= item.cost;
-  
-      // Handle specific item effects
+
       if (updatedPlayer.role === 'Gariban' && availableRoles.includes(item)) {
         updatedPlayer.role = item.name; // Only update the role if purchasing a new role
       }
@@ -42,11 +38,11 @@ const robberyOccurred=route.params.robberyOccurred;
         console.log('Updated player after purchasing Maymuncuk:', updatedPlayer);
       }
   
-      // Update the roles array with the modified player object
+      
       const updatedRoles = [...roles];
       updatedRoles[roles.findIndex(p => p.name === updatedPlayer.name)] = updatedPlayer;
   
-      // Proceed to the next player's turn
+      
       onPurchase(item,updatedPlayer);
       if(isLastPlayerTurn){
         navigation.navigate('Day', { actions, roles:updatedRoles,robberyOccurred,updatedPlayer });
@@ -54,11 +50,10 @@ const robberyOccurred=route.params.robberyOccurred;
       else{
         navigation.navigate('PlayerTurn', { roles: updatedRoles }); // Pass the updated roles array
       }
-      console.log("onPurchase çalıştı.");
-      console.log("MarketScreen PlayerTurn screen ' e gönderiyor.")
+     
       
     } else {
-      Alert.alert("Para yetmiyor.");
+      Alert.alert("Yeterli paraya sahip değilsin.");
     }
   };
   

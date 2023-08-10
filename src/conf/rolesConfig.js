@@ -11,7 +11,7 @@ export const rolesConfig = {
     
   Hırsız: {
     displayName: 'Hırsız',
-    activeAbility: (player, allPlayers) => {
+    activeAbility: (player,chosenPlayerToRob) => {
       allPlayers.forEach((otherPlayer) => {
         if (otherPlayer.role === 'Gariban' && otherPlayer.coins > 0) {
           otherPlayer.coins -= 1; // Steal 1 coin from each Gariban player

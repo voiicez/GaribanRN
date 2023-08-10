@@ -12,6 +12,7 @@ import PlayerDetailScreen from './src/screens/PlayerDetailScreen';
 import EliminationScreen from './src/screens/EliminationScreen';
 import CountdownScreen from './src/screens/CountDownScreen';
 import MarketScreen from './src/screens/MarketScreen';
+import TestScreen from './src/screens/TestScreen';
 
 
 
@@ -35,6 +36,7 @@ export default function App() {
           <Stack.Screen name="CountDown" component={CountdownScreen} options={{ headerShown:false,gestureEnabled:false}} />
           <Stack.Screen name="Vote" component={VotingPhaseScreen} options={{ headerShown:false,gestureEnabled:false}} />
           <Stack.Screen name="Elimination" component={EliminationScreen} options={{ headerShown:false,gestureEnabled:false}} />
+         
           
           
           

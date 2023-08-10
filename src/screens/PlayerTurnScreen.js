@@ -24,21 +24,8 @@ const PlayerTurnScreen = ({ navigation, route }) => {
       }
     });
   };
-  useEffect(() => {
-    console.log('PlayerTurnScreen has rendered Current Player:' +currentPlayerIndex);
-  });     
-  const [chosenPlayerToKill, setChosenPlayerToKill] = useState(null); // Store the chosen player's information
-
   const takeAction = () => {
-    if (currentPlayer.role === 'Katil') {
-      // Trigger the Katil's ability to choose a player to kill
-      // You can implement a choice mechanism here (e.g., a prompt or a custom component)
-      // Store the chosen player's information using setChosenPlayerToKill
-    } else {
-      // Handle the take action logic for other roles
-      setActions([...actions, { player: currentPlayer, action: 'took action' }]);
-    }
-    nextPlayer(); // Proceed to the next player's turn
+    nextPlayer();
   };
   
 
