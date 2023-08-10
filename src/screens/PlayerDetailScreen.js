@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, Button, Alert } from 'react-native';
+import { View, Text, Button, Alert,ImageBackground,StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { rolesConfig } from '../conf/rolesConfig';
 import {useState} from 'react';
 import { Picker } from '@react-native-picker/picker';
+import { yellow100 } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 const PlayerDetailScreen = ({ navigation, route }) => {
   const player = route.params.player;
   const takeAction = route.params.takeAction;
@@ -58,24 +59,27 @@ const handleRobAction = () => {
     Alert.alert('No player selected to rob.');
   }
 };
- 
-
-return (
-  <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text style={{ fontSize: 30, marginBottom: 20 }}>{player.name}</Text>
-    <Text style={{ fontSize: 20, marginBottom: 20 }}>Role: {roleConfig?.displayName}</Text>
-    <Text style={{ fontSize: 20, marginBottom: 20 }}>Coin: {player.coins}</Text>
+const hirsizBackground = require('../assets/images/hirsizBg.png');
+const garibanBackground = require('../assets/images/garibanBg.jpg');
+const renderContent = () => (
+  
+    <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <Text style={styles.playerName}>{player.name}</Text>
+    <Text style={styles.coinText}>{player.coins}</Text>
+    <View style={styles.actionContainer}>
     {player.role === 'Hırsız' ? (
       <View>
-        <Text>Select a player to rob:</Text>
+        
         <Picker
           selectedValue={selectedPlayerToRob}
           onValueChange={(itemValue) => setSelectedPlayerToRob(itemValue)}
+          
         >
           {otherPlayers.map((p, index) => (
             <Picker.Item key={index} label={p.name} value={p.name} />
           ))}
         </Picker>
+        <Text>Soymak istediğiniz oyuncuyu listeden seçin.</Text>
         <Button title="Rob" onPress={handleRobAction} />
        
       </View>
@@ -87,10 +91,57 @@ return (
     <Button title="Pass" onPress={() => { navigation.goBack(); passAction(); }} />
     <Button title="Buy Something" onPress={goToMarket} />
     <Text style={{ fontSize: 16, marginTop: 10 }}>{roleConfig?.description}</Text>
+    </View>
   </SafeAreaView>
+  
 );
+if (player.role === 'Hırsız') {
+  return (
+    <ImageBackground source={hirsizBackground} resizeMode="contain" style={{ flex: 1 }}>
+      {renderContent()}
+    </ImageBackground>
+  );
+} 
+if(player.role ==='Gariban'){
+  return (
+    <ImageBackground source={garibanBackground} resizeMode="contain" style={{ flex: 1 }}>
+      {renderContent()}
+    </ImageBackground>
+  );
+}
+else {
+  return renderContent();
+}
 
 
 };
-
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  playerName: {
+    position:'absolute',
+    top:80,
+    fontSize: 30,
+    marginBottom: 20,
+  },
+  coinText: {
+    position: 'absolute', // Position it absolutely
+    top: 135, // Adjust this value to position the coin text inside the circle
+    left: 50, // Adjust this value to position the coin text inside the circle
+    fontSize: 30,
+    
+  },
+  actionContainer: {
+    marginTop: 350, // Adjust this value to position the UI elements below the square card
+    alignItems: 'center',
+  },
+  description: {
+    fontSize: 16,
+    marginTop: 10,
+  },
+ 
+});
 export default PlayerDetailScreen;
