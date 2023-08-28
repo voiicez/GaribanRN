@@ -32,15 +32,9 @@ export default function App() {
           <Stack.Screen name="Market" component={MarketScreen} options={{ headerShown:true,gestureEnabled:true}} />
           <Stack.Screen name="PlayerDetail" component={PlayerDetailScreen} options={{ headerShown:false,gestureEnabled:false}} />
           <Stack.Screen name="Day" component={DayPhaseScreen} options={{ headerShown:false,gestureEnabled:false}} />
-          
           <Stack.Screen name="CountDown" component={CountdownScreen} options={{ headerShown:false,gestureEnabled:false}} />
           <Stack.Screen name="Vote" component={VotingPhaseScreen} options={{ headerShown:false,gestureEnabled:false}} />
           <Stack.Screen name="Elimination" component={EliminationScreen} options={{ headerShown:false,gestureEnabled:false}} />
-         
-          
-          
-          
-          
         </Stack.Navigator>
       </NavigationContainer>
       

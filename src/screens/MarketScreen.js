@@ -10,8 +10,7 @@ const MarketScreen = ({ navigation, route }) => {
   const actions=route.params.actions;
 const robberyOccurred=route.params.robberyOccurred;
   const availableRoles = [
-    { name: 'Hırsız', cost: 30 },
-    { name: 'Katil', cost: 30 },
+    { name: 'Doktor', cost: 30 },
     { name: 'Gariban', cost: 30 },
   ];
 

@@ -1,12 +1,14 @@
 import React from 'react';
 import { View, Text, Button,SafeAreaView } from 'react-native';
 import {useEffect} from 'react'; 
+
 // Inside DayPhaseScreen component
 const DayPhaseScreen = ({ route, navigation }) => {
     const actions = route.params.actions;
     const roles = route.params.roles; 
     const { robberyOccurred } = route.params;
     const updatedPlayer=route.params.updatedPlayer;
+    
 
   
   

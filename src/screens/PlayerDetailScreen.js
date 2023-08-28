@@ -15,9 +15,12 @@ const PlayerDetailScreen = ({ navigation, route }) => {
   const currentPlayerIndex=route.params.currentPlayerIndex;
   const actions=route.params.actions;
   const [selectedPlayerToRob, setSelectedPlayerToRob] = useState(null);
+  const [selectedPlayerToKill, setSelectedPlayerToKill] = useState(null);
   const otherPlayers = roles.filter(p => p.name !== player.name);
   const robberyOccurred=route.params.robberyOccurred;
   const updatedPlayer=route.params.updatedPlayer;
+  const [decisions, setDecisions] = useState([]);
+
 
 // PlayerDetailScreen
 const goToMarket = () => {
@@ -29,7 +32,44 @@ const handlePurchaseAndTakeAction = (item) => {
   handlePurchase(item); // Handle the purchase
  
 };
+
+const hirsizDecision = (selectedPlayerToRob) => {
+  if (selectedPlayerToRob) {
+    setDecisions(prev => [...prev, { action: 'rob', player: player.name, target: selectedPlayerToRob }]);
+    navigation.goBack();
+    takeAction();
+  } else {
+    Alert.alert('Aksiyonu uygulayacak birini seçmelisin.');
+  }
+};
+
+const cinayetDecision = (selectedPlayerToKill) => {
+  if (selectedPlayerToKill) {
+    setDecisions(prev => [...prev, { action: 'kill', player: player.name, target: selectedPlayerToKill }]);
+    navigation.goBack();
+    takeAction();
+  } else {
+    Alert.alert('Aksiyonu uygulayacak birini seçmelisin.');
+  }
+};
+
+const executeDecisions = () => {
+  decisions.forEach(decision => {
+    if (decision.action === 'rob') {
+      const robbedPlayer = roles.find(p => p.name === decision.target);
+      const hirsizPlayer = roles.find(p => p.name === decision.player);
+      hirsizPlayer.coins += robbedPlayer.coins;
+      robbedPlayer.coins = 0;
+    } else if (decision.action === 'kill') {
+      const index = roles.findIndex(p => p.name === decision.target);
+      roles.splice(index, 1);
+    }
+  });
+  setDecisions([]); // Clear decisions for the next round
+};
+
 const takeActions = (selectedPlayerToRob) => {
+  
   if (player.role === 'Hırsız') {
     console.log(selectedPlayerToRob)
     if (selectedPlayerToRob) {
@@ -54,17 +94,28 @@ const takeActions = (selectedPlayerToRob) => {
       else 
       {
         Alert.alert('Maymuncuk olmadan soygun yapılamaz.');
-        player.hasMaymuncuk=true;
+        
       }
     } 
     else 
     {
       Alert.alert('Aksiyonu uygulayacak birini seçmelisin.');
     }
-  }else{
-    console.log("Hırsız Değilsin.")
   }
+  
 };
+
+const cinayetAction = (selectedPlayerToKill) => {
+  if (selectedPlayerToKill) {
+    const updatedRoles = roles.filter(p => p.name !== selectedPlayerToKill);
+    // Optionally, you can update the state or any other logic here
+    console.log(`${selectedPlayerToKill} has been eliminated.`);
+    navigation.goBack();
+    takeAction();
+  } else {
+    Alert.alert('Aksiyonu uygulayacak birini seçmelisin.');
+  }
+}
   
 
 
@@ -81,7 +132,7 @@ const renderContent = () => (
        <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start',zIndex:10 }}>
        <View> 
          <SelectList
-           setSelected={(val) => setSelectedPlayerToRob(val)}
+           setSelected={(val) => hirsizDecision(val)}
            data={otherPlayers.map(p => ({ key: p.name, value: p.name }))}
            save="value"
            dropdownStyles={styles.dropdown}
@@ -95,8 +146,30 @@ const renderContent = () => (
           
         
       ) : null} 
-        {player.role !== 'Gariban' && (
+       {player.role === 'Katil' ? (
+       
+       <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start',zIndex:10 }}>
+       <View> 
+         <SelectList
+           setSelected={(val) => cinayetAction(val)}
+           data={otherPlayers.map(p => ({ key: p.name, value: p.name }))}
+           save="value"
+           dropdownStyles={styles.dropdown}
+           search={false}
+           placeholder='Kurbanı seçin.'
+           
+         />
+       </View>
+       
+     </View>
+          
+        
+      ) : null} 
+        {player.role !== 'Gariban' && player.role==='Hırsız' &&(
           <Button title="Aksiyon Al" onPress={() => { takeActions(selectedPlayerToRob); }} />
+        )}
+        {player.role !== 'Gariban' && player.role==='Katil' && (
+          <Button title="Aksiyon Al" onPress={() => { cinayetAction(selectedPlayerToKill); }} />
         )}
       
       <Button title="Pass" onPress={() => { navigation.goBack(); passAction(); }} />
