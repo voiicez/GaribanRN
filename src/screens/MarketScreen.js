@@ -8,7 +8,7 @@ const MarketScreen = ({ navigation, route }) => {
   const roles = route.params.roles;
   const currentPlayerIndex=route.params.currentPlayerIndex;
   const actions=route.params.actions;
-const robberyOccurred=route.params.robberyOccurred;
+
   const availableRoles = [
     { name: 'Doktor', cost: 30 },
     { name: 'Gariban', cost: 30 },
@@ -18,6 +18,7 @@ const robberyOccurred=route.params.robberyOccurred;
     { name: 'Ticket', cost: 100 },
     { name: 'Maymuncuk', cost: 10 },
     { name: 'Sargı Bezi', cost: 10 },
+    { name: 'Cinayet Aleti', cost: 10 },
     { name: 'Kurbağa Sivilcesi', cost: 10 },
     { name: 'Şeker Reçeli', cost: 100 },
   ];
@@ -35,6 +36,10 @@ const robberyOccurred=route.params.robberyOccurred;
         
         updatedPlayer.hasMaymuncuk=true;
         console.log('Updated player after purchasing Maymuncuk:', updatedPlayer);
+      }
+      if(item.name==='Cinayet Aleti'){
+        updatedPlayer.hasCinayetAleti=true;
+        console.log("Oo! Birileri bir şeyler peşinde.");
       }
   
       
