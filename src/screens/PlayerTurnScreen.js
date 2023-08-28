@@ -45,7 +45,7 @@ const PlayerTurnScreen = ({ navigation, route }) => {
     if (updatedTurnsCompleted.every(turnCompleted => turnCompleted)) {
       // All players have taken their turns, end the night phase
       console.log("herkes turu tamamladı.");
-      applyActions(actions);
+      
       setCurrentPlayerIndex(0); // Reset for the next night phase
       setPlayersTurnCompleted(Array(roles.length).fill(false)); // Reset turns completed
       navigation.navigate('Day', { actions, roles,robberyOccurred });
@@ -62,14 +62,7 @@ const PlayerTurnScreen = ({ navigation, route }) => {
 
  
 
-  const applyActions = (actions) => {
-    actions.forEach((action) => {
-      if(action.player.role==="Hırsız")
-      console.log("Hırsız özellik kullandı.");
-      updatePassiveAbilities();
-      
-    });
-  };
+
 
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
