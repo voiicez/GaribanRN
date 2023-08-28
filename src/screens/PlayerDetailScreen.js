@@ -35,26 +35,18 @@ const handlePurchaseAndTakeAction = (item) => {
 
 
 const robAction = (selectedPlayerToRob) => {
+ 
   if (player.role === 'Hırsız') {
 
     if (selectedPlayerToRob) {
-   
+      
       if (player.hasMaymuncuk)
        {
    
-   const robbedPlayerIndex = roles.findIndex(p => p.name === selectedPlayerToRob);
-   const robbedPlayer = roles[robbedPlayerIndex];
-   const stolenCoins = robbedPlayer.coins;
-   robbedPlayer.coins = 0;
-   player.coins += stolenCoins;
-   player.hasMaymuncuk=false;
-   const updatedRoles = [...roles];
-   updatedRoles[robbedPlayerIndex] = robbedPlayer;
-   updatedRoles[currentPlayerIndex] = player;
-   navigation.goBack();
-   takeAction();
-   
-   console.log(`Someone is Robbed, ${selectedPlayerToRob}. Stolen coins: ${stolenCoins}`);
+        const newAction = { player: player, type: 'rob', target: selectedPlayerToRob };
+        player.hasMaymuncuk=false;
+        navigation.goBack();
+        takeAction(newAction);
       } 
       else 
       {
@@ -73,13 +65,12 @@ const robAction = (selectedPlayerToRob) => {
 const cinayetAction = (selectedPlayerToKill) => {
   if (selectedPlayerToKill) {
     if(player.hasCinayetAleti){
-      const updatedRoles = roles.filter(p => p.name !== selectedPlayerToKill);
-      // Optionally, you can update the state or any other logic here
-      console.log(`${selectedPlayerToKill} has been eliminated.`);
-      navigation.goBack();
-      takeAction();
+      const newAction = { player: player, type: 'kill', target: selectedPlayerToKill};
+        player.hasCinayetAleti=false;
+        navigation.goBack();
+        takeAction(newAction);
     }else{
-      Alert.alert("Hop!");
+      Alert.alert("Cinayet aleti olmadan öldüremezsin!");
     }
    
   } else {

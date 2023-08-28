@@ -16,17 +16,13 @@ const PlayerTurnScreen = ({ navigation, route }) => {
     console.log("PlayerTurnScreen handlePurchase: Currentplayer ():"+currentPlayerIndex)
     nextPlayer();
   };
-  const updatePassiveAbilities = () => {
-    roles.forEach((player) => {
-      const roleConfig = rolesConfig[player.role];
-      if (roleConfig && roleConfig.passiveAbility) {
-        roleConfig.passiveAbility(player);
-      }
-    });
-  };
-  const takeAction = () => {
+
+  const takeAction = (newAction) => {
+    console.log(newAction)
+    setActions(prevActions => [...prevActions, newAction]);
     nextPlayer();
   };
+  
   
 
   const passAction = () => {
@@ -36,31 +32,46 @@ const PlayerTurnScreen = ({ navigation, route }) => {
 
   const nextPlayer = () => {
     console.log("nextPlayer fonksiyonu çalışıyor...");
-    // Mark the current player's turn as completed
     const updatedTurnsCompleted = [...playersTurnCompleted];
     updatedTurnsCompleted[currentPlayerIndex] = true;
     setPlayersTurnCompleted(updatedTurnsCompleted);
-  
-    // Check if all players have completed their turns
     if (updatedTurnsCompleted.every(turnCompleted => turnCompleted)) {
-      // All players have taken their turns, end the night phase
       console.log("herkes turu tamamladı.");
-      
-      setCurrentPlayerIndex(0); // Reset for the next night phase
-      setPlayersTurnCompleted(Array(roles.length).fill(false)); // Reset turns completed
+      setCurrentPlayerIndex(0); 
+      setPlayersTurnCompleted(Array(roles.length).fill(false)); 
+      applyActions();
       navigation.navigate('Day', { actions, roles,robberyOccurred });
-      
     } else {
       if (currentPlayerIndex < roles.length - 1) {
         setCurrentPlayerIndex(currentPlayerIndex + 1);
       } else {
-        setCurrentPlayerIndex(0); // Reset the index to 0 for the next night phase
+        setCurrentPlayerIndex(0); 
       }
     }
   };
   
-
- 
+  const applyActions = () => {
+   
+    actions.forEach(action => {
+      if (action.type === 'rob') {
+        const robber = action.player;
+        const target = action.target;
+        const robbedPlayerIndex = roles.findIndex(p => p.name === target);
+        const robbedPlayer = roles[robbedPlayerIndex];
+        const stolenCoins = robbedPlayer.coins;
+        robbedPlayer.coins = 0;
+        robber.coins += stolenCoins;
+        const updatedRoles = [...roles];
+        updatedRoles[robbedPlayerIndex] = robbedPlayer;
+        console.log(`${robber.name} robbed ${target}. Stolen coins: ${stolenCoins}`);
+      } if (action.type === 'kill') {
+        
+ const killer=action.player;
+ const target=action.target;
+       roles = roles.filter(p => p.name !== target);
+       console.log(`${killer.name} killed ${target}.`);
+      }
+    })};
 
 
 
