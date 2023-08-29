@@ -42,7 +42,7 @@ const robAction = (selectedPlayerToRob) => {
       
       if (player.hasMaymuncuk)
        {
-   
+        console.log("Hırsız işlem yapıyor.")
         const newAction = { player: player, type: 'rob', target: selectedPlayerToRob };
         player.hasMaymuncuk=false;
         navigation.goBack();

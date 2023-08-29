@@ -49,7 +49,7 @@ const MarketScreen = ({ navigation, route }) => {
       
       onPurchase(item,updatedPlayer);
       if(isLastPlayerTurn){
-        navigation.navigate('Day', { actions, roles:updatedRoles,robberyOccurred,updatedPlayer });
+        navigation.navigate('Day', { actions, roles:updatedRoles,updatedPlayer });
       }
       else{
         navigation.navigate('PlayerTurn', { roles: updatedRoles }); // Pass the updated roles array

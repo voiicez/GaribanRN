@@ -7,9 +7,10 @@ const PlayerTurnScreen = ({ navigation, route }) => {
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
   const [actions, setActions] = useState([]);
   const currentPlayer = roles[currentPlayerIndex];
-  const [chosenPlayerToRob, setChosenPlayerToRob] = useState(null);
   const [playersTurnCompleted, setPlayersTurnCompleted] = useState(Array(roles.length).fill(false));
-  const robberyOccurred = actions.some(action => action.type === 'rob');
+  
+  const [updatedRoles, setUpdatedRoles] = useState(roles);
+
 
   const handlePurchase = (item) =>
    {
@@ -18,7 +19,7 @@ const PlayerTurnScreen = ({ navigation, route }) => {
   };
 
   const takeAction = (newAction) => {
-    console.log(newAction)
+    console.log(newAction) //Buraya geliyor
     setActions(prevActions => [...prevActions, newAction]);
     nextPlayer();
   };
@@ -37,21 +38,21 @@ const PlayerTurnScreen = ({ navigation, route }) => {
     setPlayersTurnCompleted(updatedTurnsCompleted);
     if (updatedTurnsCompleted.every(turnCompleted => turnCompleted)) {
       console.log("herkes turu tamamladı.");
-      setCurrentPlayerIndex(0); 
+      //setCurrentPlayerIndex(0); 
       setPlayersTurnCompleted(Array(roles.length).fill(false)); 
       applyActions();
-      navigation.navigate('Day', { actions, roles,robberyOccurred });
+      navigation.navigate('Day', { actions, roles });
     } else {
       if (currentPlayerIndex < roles.length - 1) {
         setCurrentPlayerIndex(currentPlayerIndex + 1);
       } else {
-        setCurrentPlayerIndex(0); 
+        //setCurrentPlayerIndex(0); 
       }
     }
   };
   
   const applyActions = () => {
-   
+    let tempRoles = [...updatedRoles];
     actions.forEach(action => {
       if (action.type === 'rob') {
         const robber = action.player;
@@ -68,9 +69,11 @@ const PlayerTurnScreen = ({ navigation, route }) => {
         
  const killer=action.player;
  const target=action.target;
-       roles = roles.filter(p => p.name !== target);
+       tempRoles = tempRoles.filter(p => p.name !== target);
        console.log(`${killer.name} killed ${target}.`);
       }
+
+      setUpdatedRoles(tempRoles);
     })};
 
 
@@ -78,7 +81,7 @@ const PlayerTurnScreen = ({ navigation, route }) => {
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text style={{ fontSize: 30, marginBottom: 20 }}>{currentPlayer.name}'s Turn</Text>
-      <Button title="See The Detail" onPress={() => navigation.navigate('PlayerDetail', { player: currentPlayer, takeAction, passAction,handlePurchase,nextPlayer,roles,currentPlayerIndex,actions,robberyOccurred })} />
+      <Button title="See The Detail" onPress={() => navigation.navigate('PlayerDetail', { player: currentPlayer, takeAction, passAction,handlePurchase,nextPlayer,roles,currentPlayerIndex,actions })} />
     </SafeAreaView>
   );
 };

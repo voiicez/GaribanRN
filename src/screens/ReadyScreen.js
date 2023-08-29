@@ -31,6 +31,7 @@ const ReadyScreen = ({ navigation, route }) => {
     }));
 
     setRoles(assignedRoles);
+    console.log(assignedRoles)
   };
 
   return (
