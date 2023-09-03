@@ -19,7 +19,8 @@ const PlayerDetailScreen = ({ navigation, route }) => {
   const otherPlayers = roles.filter(p => p.name !== player.name);
   const robberyOccurred=route.params.robberyOccurred;
   const updatedPlayer=route.params.updatedPlayer;
-  
+  const isLastPlayerTurn = currentPlayerIndex === roles.length - 1;
+  const moveNext=route.params.moveNext;
 
 
 // PlayerDetailScreen
@@ -42,11 +43,29 @@ const robAction = (selectedPlayerToRob) => {
       
       if (!player.hasMaymuncuk)
        {
-        console.log("Hırsız işlem yapıyor.")
-        const newAction = { player: player, type: 'rob', target: selectedPlayerToRob };
-        player.hasMaymuncuk=false;
-        
-        takeAction(newAction);
+        if(isLastPlayerTurn){
+          console.log("Processing rob action for:", player.name);
+          const robber = player;
+          const target = selectedPlayerToRob;
+          const robbedPlayerIndex = roles.findIndex(p => p.name === target);
+          const robbedPlayer = roles[robbedPlayerIndex];
+          const stolenCoins = robbedPlayer.coins;
+          robbedPlayer.coins = 0;
+          robber.coins += stolenCoins;
+          const updatedRoles = [...roles];
+  
+    updatedRoles[currentPlayerIndex] = player;
+          
+          console.log(`${robber.name} robbed ${target}. Stolen coins: ${stolenCoins}`);
+          moveNext();
+        }else{
+          console.log("Hırsız işlem yapıyor.")
+          const newAction = { player: player, type: 'rob', target: selectedPlayerToRob };
+          player.hasMaymuncuk=false;
+          
+          takeAction(newAction);
+          
+        }
         navigation.goBack();
       } 
       else 

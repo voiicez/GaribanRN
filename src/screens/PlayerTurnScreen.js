@@ -24,6 +24,9 @@ const PlayerTurnScreen = ({ navigation, route }) => {
     setActions(prevActions => {
         const updatedActions = [...prevActions, newAction];
         console.log("Updated actions array:", updatedActions);
+        if (currentPlayerIndex === roles.length - 1) { // Check if it's the last player
+            applyActions(updatedActions);  // Apply the actions immediately
+        }
         return updatedActions;
     });
     moveNext();
@@ -113,7 +116,7 @@ const applyActions = () => {
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text style={{ fontSize: 30, marginBottom: 20 }}>{currentPlayer.name}'s Turn</Text>
-      <Button title="See The Detail" onPress={() => navigation.navigate('PlayerDetail', { player: currentPlayer, takeAction, passAction,handlePurchase,nextPlayer,roles,currentPlayerIndex,actions })} />
+      <Button title="See The Detail" onPress={() => navigation.navigate('PlayerDetail', { player: currentPlayer, takeAction, passAction,handlePurchase,nextPlayer,roles,currentPlayerIndex,actions,moveNext })} />
     </SafeAreaView>
   );
 };
