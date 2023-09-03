@@ -8,7 +8,8 @@ const PlayerTurnScreen = ({ navigation, route }) => {
   const [actions, setActions] = useState([]);
   const currentPlayer = roles[currentPlayerIndex];
   const [playersTurnCompleted, setPlayersTurnCompleted] = useState(Array(roles.length).fill(false));
-  
+  const [roundEnded, setRoundEnded] = useState(false);
+
   const [updatedRoles, setUpdatedRoles] = useState(roles);
 
 
@@ -19,12 +20,39 @@ const PlayerTurnScreen = ({ navigation, route }) => {
   };
 
   const takeAction = (newAction) => {
-    console.log(newAction) //Buraya geliyor
-    setActions(prevActions => [...prevActions, newAction]);
-    nextPlayer();
-  };
+    console.log(newAction);
+    setActions(prevActions => {
+        const updatedActions = [...prevActions, newAction];
+        console.log("Updated actions array:", updatedActions);
+        return updatedActions;
+    });
+    moveNext();
+};
+  
+  const moveNext = () => {
+    if (currentPlayerIndex < roles.length - 1) {
+        setCurrentPlayerIndex(currentPlayerIndex + 1);
+    } else {
+        endRound();
+    }
+};  
+useEffect(() => {
+  if (roundEnded) {
+    navigation.navigate('Day', { actions, roles: updatedRoles });
+    setRoundEnded(false); // Reset for the next round
+  }
+}, [roundEnded, updatedRoles]);
+
+
+const endRound = () => {
+  console.log("endRound is being called for player:", currentPlayer.name);
+  applyActions();
+  setCurrentPlayerIndex(0);
+  setPlayersTurnCompleted(Array(roles.length).fill(false));
+  setRoundEnded(true);
   
   
+};
 
   const passAction = () => {
     setActions([...actions, { player: currentPlayer, action: 'passed' }]);
@@ -37,44 +65,48 @@ const PlayerTurnScreen = ({ navigation, route }) => {
     updatedTurnsCompleted[currentPlayerIndex] = true;
     setPlayersTurnCompleted(updatedTurnsCompleted);
     if (updatedTurnsCompleted.every(turnCompleted => turnCompleted)) {
-      console.log("herkes turu tamamladı.");
-      //setCurrentPlayerIndex(0); 
-      setPlayersTurnCompleted(Array(roles.length).fill(false)); 
-      applyActions();
-      navigation.navigate('Day', { actions, roles });
+        endRound();
     } else {
-      if (currentPlayerIndex < roles.length - 1) {
-        setCurrentPlayerIndex(currentPlayerIndex + 1);
-      } else {
-        //setCurrentPlayerIndex(0); 
-      }
+        moveNext();
     }
-  };
+};
   
-  const applyActions = () => {
-    let tempRoles = [...updatedRoles];
-    actions.forEach(action => {
-      if (action.type === 'rob') {
-        const robber = action.player;
-        const target = action.target;
-        const robbedPlayerIndex = roles.findIndex(p => p.name === target);
-        const robbedPlayer = roles[robbedPlayerIndex];
-        const stolenCoins = robbedPlayer.coins;
-        robbedPlayer.coins = 0;
-        robber.coins += stolenCoins;
-        const updatedRoles = [...roles];
-        updatedRoles[robbedPlayerIndex] = robbedPlayer;
-        console.log(`${robber.name} robbed ${target}. Stolen coins: ${stolenCoins}`);
-      } if (action.type === 'kill') {
-        
- const killer=action.player;
- const target=action.target;
-       tempRoles = tempRoles.filter(p => p.name !== target);
-       console.log(`${killer.name} killed ${target}.`);
-      }
+const applyActions = () => {
+  let tempRoles = [...updatedRoles];
+  console.log("Starting applyActions function");
 
-      setUpdatedRoles(tempRoles);
-    })};
+  for (let i = 0; i < actions.length; i++) {
+      const action = actions[i];
+      console.log("Checking action type for:", action);
+
+      if (action.type === 'rob') {
+          console.log("Processing rob action for:", action.player.name);
+          const robber = action.player;
+          const target = action.target;
+          const robbedPlayerIndex = roles.findIndex(p => p.name === target);
+          const robbedPlayer = roles[robbedPlayerIndex];
+          const stolenCoins = robbedPlayer.coins;
+          robbedPlayer.coins = 0;
+          robber.coins += stolenCoins;
+          tempRoles[robbedPlayerIndex] = robbedPlayer;
+          console.log(`${robber.name} robbed ${target}. Stolen coins: ${stolenCoins}`);
+      } else if (action.type === 'kill') {
+          console.log("Processing kill action for:", action.player.name);
+          const killer = action.player;
+          const target = action.target;
+          tempRoles = tempRoles.filter(p => p.name !== target);
+          console.log(`${killer.name} killed ${target}.`);
+      } else {
+          console.log("Unknown action type:", action.type);
+      }
+  }
+
+  console.log("Finished processing all actions. Updated roles:", tempRoles);
+  setUpdatedRoles(tempRoles);
+};
+
+
+
 
 
 
