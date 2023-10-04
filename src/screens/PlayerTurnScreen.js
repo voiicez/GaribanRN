@@ -4,6 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { rolesConfig } from '../conf/rolesConfig';
 import { useSelector } from 'react-redux';
 import { setNavigatedFromMarket } from './navigationSlice';
+import { useDispatch } from 'react-redux';
+
 
 const PlayerTurnScreen = ({ navigation, route }) => {
   const roles = route.params.roles;
@@ -14,6 +16,8 @@ const PlayerTurnScreen = ({ navigation, route }) => {
   const [roundEnded, setRoundEnded] = useState(false);
   const navigatedFromMarket = useSelector(state => state.navigation.navigatedFromMarket);
   const [updatedRoles, setUpdatedRoles] = useState(roles);
+  const dispatch = useDispatch();
+
 
 
   const handlePurchase = (item) =>
