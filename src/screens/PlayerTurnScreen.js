@@ -5,6 +5,7 @@ import { rolesConfig } from '../conf/rolesConfig';
 import { useSelector } from 'react-redux';
 import { setNavigatedFromMarket } from './navigationSlice';
 import { useDispatch } from 'react-redux';
+import { addNightEvent } from './gameSlice';
 
 
 const PlayerTurnScreen = ({ navigation, route }) => {
@@ -95,6 +96,7 @@ const applyActions = () => {
 
       if (action.type === 'rob') {
           console.log("Processing rob action for:", action.player.name);
+          dispatch(addNightEvent("Dün gece bir soygun yaşandı."));
           const robber = action.player;
           const target = action.target;
           const robbedPlayerIndex = roles.findIndex(p => p.name === target);
@@ -106,6 +108,7 @@ const applyActions = () => {
           console.log(`${robber.name} robbed ${target}. Stolen coins: ${stolenCoins}`);
       } else if (action.type === 'kill') {
           console.log("Processing kill action for:", action.player.name);
+          dispatch(addNightEvent("Dün gece bir cinayet işlendi."));
           const killer = action.player;
           const target = action.target;
           tempRoles = tempRoles.filter(p => p.name !== target);
