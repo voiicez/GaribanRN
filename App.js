@@ -14,14 +14,15 @@ import CountdownScreen from './src/screens/CountDownScreen';
 import MarketScreen from './src/screens/MarketScreen';
 import TestScreen from './src/screens/TestScreen';
 
-
+import { Provider } from 'react-redux';
+import { store } from './src/screens/store';
 
 
 const Stack = createStackNavigator();
 
 export default function App() {
     return (
-     
+      <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Giris">
           <Stack.Screen name="Giris" component={GirisEkrani} />
@@ -37,6 +38,7 @@ export default function App() {
           <Stack.Screen name="Elimination" component={EliminationScreen} options={{ headerShown:false,gestureEnabled:false}} />
         </Stack.Navigator>
       </NavigationContainer>
+      </Provider>
       
     );
   }

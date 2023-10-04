@@ -2,6 +2,9 @@ import React, { useState,useEffect} from 'react';
 import { View, Text, Button } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { rolesConfig } from '../conf/rolesConfig';
+import { useSelector } from 'react-redux';
+import { setNavigatedFromMarket } from './navigationSlice';
+
 const PlayerTurnScreen = ({ navigation, route }) => {
   const roles = route.params.roles;
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
@@ -9,7 +12,7 @@ const PlayerTurnScreen = ({ navigation, route }) => {
   const currentPlayer = roles[currentPlayerIndex];
   const [playersTurnCompleted, setPlayersTurnCompleted] = useState(Array(roles.length).fill(false));
   const [roundEnded, setRoundEnded] = useState(false);
-
+  const navigatedFromMarket = useSelector(state => state.navigation.navigatedFromMarket);
   const [updatedRoles, setUpdatedRoles] = useState(roles);
 
 
@@ -23,7 +26,7 @@ const PlayerTurnScreen = ({ navigation, route }) => {
     console.log(newAction);
     setActions(prevActions => {
         const updatedActions = [...prevActions, newAction];
-        console.log("Updated actions array:", updatedActions);
+        console.log("[PLAYERTURN SCREEN] Updated actions array:", updatedActions);
         if (currentPlayerIndex === roles.length - 1) { // Check if it's the last player
             applyActions(updatedActions);  // Apply the actions immediately
         }
@@ -40,15 +43,19 @@ const PlayerTurnScreen = ({ navigation, route }) => {
     }
 };  
 useEffect(() => {
-  if (roundEnded) {
+  if (roundEnded &&!navigatedFromMarket) {
+    console.log('[PLAYERTURNSCREEN] navigating to the day screen from player turn screen.');
+    
+    
     navigation.navigate('Day', { actions, roles: updatedRoles });
+    
     setRoundEnded(false); // Reset for the next round
   }
 }, [roundEnded, updatedRoles]);
 
 
 const endRound = () => {
-  console.log("endRound is being called for player:", currentPlayer.name);
+  console.log("[PLAYERTURN SCREEN] endRound is being called for player:", currentPlayer.name);
   applyActions();
   setCurrentPlayerIndex(0);
   setPlayersTurnCompleted(Array(roles.length).fill(false));
@@ -76,7 +83,7 @@ const endRound = () => {
   
 const applyActions = () => {
   let tempRoles = [...updatedRoles];
-  console.log("Starting applyActions function");
+  console.log("[PLAYERTURN SCREEN] Starting applyActions function");
 
   for (let i = 0; i < actions.length; i++) {
       const action = actions[i];
@@ -104,7 +111,7 @@ const applyActions = () => {
       }
   }
 
-  console.log("Finished processing all actions. Updated roles:", tempRoles);
+  console.log("[PLAYERTURN SCREEN] Finished processing all actions. Updated roles:", tempRoles);
   setUpdatedRoles(tempRoles);
 };
 

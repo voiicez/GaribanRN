@@ -1,14 +1,15 @@
 import React from 'react';
 import { View, Text, Button, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import { useDispatch } from 'react-redux';
+import { setNavigatedFromMarket } from './navigationSlice';
 const MarketScreen = ({ navigation, route }) => {
   const player = route.params.player;
   const onPurchase = route.params.onPurchase;
   const roles = route.params.roles;
   const currentPlayerIndex=route.params.currentPlayerIndex;
   const actions=route.params.actions;
-
+  const dispatch = useDispatch();
   const availableRoles = [
     { name: 'Doktor', cost: 30 },
     { name: 'Gariban', cost: 30 },
@@ -51,7 +52,9 @@ const MarketScreen = ({ navigation, route }) => {
       console.log('Updated Roles after purchase:', updatedRoles);
       console.log('Updated Player after purchase:', updatedPlayer);
       if(isLastPlayerTurn){
-        navigation.navigate('Day', { actions, roles:updatedRoles });
+        console.log("[MARKET SCREEN] Last player used purchase, navigating to the day screen.")
+        dispatch(setNavigatedFromMarket(true));
+        navigation.navigate('Day', {roles:updatedRoles,player:updatedPlayer });
       }
       else{
         navigation.navigate('PlayerTurn', { roles: updatedRoles,player:updatedPlayer }); // Pass the updated roles array
