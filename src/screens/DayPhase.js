@@ -8,7 +8,8 @@ const DayPhaseScreen = ({ route, navigation }) => {
     const roles = route.params.roles; 
     const { robberyOccurred } = route.params;
     const updatedPlayer=route.params.updatedPlayer;
-    
+    console.log('Roles in DayPhaseScreen:', roles);
+    console.log('Updated Player in DayPhaseScreen:', updatedPlayer);
 
   
   

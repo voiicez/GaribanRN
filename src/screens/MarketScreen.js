@@ -22,7 +22,7 @@ const MarketScreen = ({ navigation, route }) => {
     { name: 'Kurbağa Sivilcesi', cost: 10 },
     { name: 'Şeker Reçeli', cost: 100 },
   ];
-  const allTurnsUsed = roles.every((player) => player.turnCompleted);
+ 
   const isLastPlayerTurn = currentPlayerIndex === roles.length - 1;
   const purchaseItem = (item) => {
     if (player.coins >= item.cost) {
@@ -48,11 +48,13 @@ const MarketScreen = ({ navigation, route }) => {
   
       
       onPurchase(item,updatedPlayer);
+      console.log('Updated Roles after purchase:', updatedRoles);
+      console.log('Updated Player after purchase:', updatedPlayer);
       if(isLastPlayerTurn){
-        navigation.navigate('Day', { actions, roles:updatedRoles,updatedPlayer });
+        navigation.navigate('Day', { actions, roles:updatedRoles });
       }
       else{
-        navigation.navigate('PlayerTurn', { roles: updatedRoles }); // Pass the updated roles array
+        navigation.navigate('PlayerTurn', { roles: updatedRoles,player:updatedPlayer }); // Pass the updated roles array
       }
      
       
