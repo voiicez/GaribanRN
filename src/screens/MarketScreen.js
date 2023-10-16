@@ -44,8 +44,10 @@ const MarketScreen = ({ navigation, route }) => {
       }
   
       
+      console.log("Before update - roles:", roles);
       const updatedRoles = [...roles];
       updatedRoles[roles.findIndex(p => p.name === updatedPlayer.name)] = updatedPlayer;
+      console.log("After update - updatedRoles:", updatedRoles);
   
       
       onPurchase(item,updatedPlayer);

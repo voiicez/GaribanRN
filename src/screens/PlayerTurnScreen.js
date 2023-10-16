@@ -48,6 +48,7 @@ const PlayerTurnScreen = ({ navigation, route }) => {
     }
 };  
 useEffect(() => {
+  setUpdatedRoles(roles);
   if (roundEnded &&!navigatedFromMarket) {
     console.log('[PLAYERTURNSCREEN] navigating to the day screen from player turn screen.');
     
@@ -56,7 +57,7 @@ useEffect(() => {
     
     setRoundEnded(false); // Reset for the next round
   }
-}, [roundEnded, updatedRoles]);
+}, [roundEnded, updatedRoles,roles]);
 
 
 const endRound = () => {
