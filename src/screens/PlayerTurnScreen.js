@@ -18,6 +18,7 @@ const PlayerTurnScreen = ({ navigation, route }) => {
   const navigatedFromMarket = useSelector(state => state.navigation.navigatedFromMarket);
   const [updatedRoles, setUpdatedRoles] = useState(roles);
   const dispatch = useDispatch();
+  const [hasNavigated, setHasNavigated] = useState(false);
 
 
 
@@ -49,15 +50,15 @@ const PlayerTurnScreen = ({ navigation, route }) => {
 };  
 useEffect(() => {
   setUpdatedRoles(roles);
-  if (roundEnded &&!navigatedFromMarket) {
+  if (roundEnded && !navigatedFromMarket && navigation.isFocused()) {
     console.log('[PLAYERTURNSCREEN] navigating to the day screen from player turn screen.');
-    
-    
     navigation.navigate('Day', { actions, roles: updatedRoles });
-    
     setRoundEnded(false); // Reset for the next round
   }
-}, [roundEnded, updatedRoles,roles]);
+}, [roundEnded, updatedRoles, navigatedFromMarket, navigation,roles]);
+
+
+
 
 
 const endRound = () => {
