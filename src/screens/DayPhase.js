@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button,SafeAreaView } from 'react-native';
+import { View, Text, Button,SafeAreaView,ImageBackground } from 'react-native';
 import {useEffect} from 'react'; 
 import { useSelector } from 'react-redux';
 import { setNavigatedFromMarket } from './navigationSlice';
@@ -26,8 +26,9 @@ const DayPhaseScreen = ({ route, navigation }) => {
 
 
   
-  
+  const sabahBackground=require('../assets/images/sabahBackground.png');
   return (
+    <ImageBackground source={sabahBackground} resizeMode="center" style={{ flex: 1 }}>
     <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text style={{ fontSize: 30, marginBottom: 20 }}>Day Phase</Text>
       
@@ -42,6 +43,7 @@ const DayPhaseScreen = ({ route, navigation }) => {
 
       <Button title="Ready" onPress={() => navigation.navigate('CountDown', { actions, roles, updatedPlayer })} />
     </SafeAreaView>
+    </ImageBackground>
   );
   };
   
