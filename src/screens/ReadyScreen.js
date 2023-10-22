@@ -24,11 +24,20 @@ const ReadyScreen = ({ navigation, route }) => {
     shuffledPlayers.sort(() => Math.random() - 0.5);
 
     // Assign the shuffled roles to the shuffled players
-    const assignedRoles = shuffledPlayers.map((player, index) => ({
-      name: player,
-      role: roles[index],
-      coins: 30,
-    }));
+    const assignedRoles = shuffledPlayers.map((player, index) => {
+      let playerObj = {
+          name: player,
+          role: roles[index],
+          coins: 30,
+      };
+  
+      // If the role is "Hırsız", add the hasMaymuncuk property
+      if (roles[index] === 'Hırsız') {
+          playerObj.hasMaymuncuk = true;
+      }
+  
+      return playerObj;
+  });
 
     setRoles(assignedRoles);
     console.log(assignedRoles)

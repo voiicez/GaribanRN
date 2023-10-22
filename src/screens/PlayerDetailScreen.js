@@ -41,7 +41,7 @@ const robAction = (selectedPlayerToRob) => {
 
     if (selectedPlayerToRob) {
       
-      if (!player.hasMaymuncuk)
+      if (player.hasMaymuncuk)
        {
         if(isLastPlayerTurn){
           console.log("Processing rob action for:", player.name);
@@ -164,21 +164,21 @@ const renderContent = () => (
 
 if (player.role === 'Hırsız') {
   return (
-    <ImageBackground source={hirsizBackground} resizeMode="contain" style={{ flex: 1 }}>
+    <ImageBackground source={hirsizBackground} resizeMode="contain" style={{ flex: 1,backgroundColor:'#bfbebe' }}>
       {renderContent()}
     </ImageBackground>
   );
 } 
 if(player.role ==='Gariban'){
   return (
-    <ImageBackground source={garibanBackground} resizeMode="contain" style={{ flex: 1 }}>
+    <ImageBackground source={garibanBackground} resizeMode="contain" style={{ flex: 1,backgroundColor:'#bfbebe' }}>
       {renderContent()}
     </ImageBackground>
   );
 }
 if(player.role==='Katil'){
   return(
-    <ImageBackground source={katilBackground} resizeMode="contain" style={{flex:1}}>
+    <ImageBackground source={katilBackground} resizeMode="contain" style={{flex:1,backgroundColor:'#bfbebe'}}>
       {renderContent()}
       </ImageBackground>
   );

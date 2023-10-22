@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button,SafeAreaView,ImageBackground } from 'react-native';
+import { View, Text, Button,SafeAreaView,ImageBackground, Alert } from 'react-native';
 import {useEffect} from 'react'; 
 import { useSelector } from 'react-redux';
 import { setNavigatedFromMarket } from './navigationSlice';
@@ -24,11 +24,19 @@ const DayPhaseScreen = ({ route, navigation }) => {
       };
   }, [dispatch]);
 
+  useEffect(() => {
+      const katilCanli=roles.some(player=>player.role==='Katil');
+      if(!katilCanli){
+        Alert.alert("oyun bitti!");
+      }
+    
+}, []);
+
 
   
   const sabahBackground=require('../assets/images/sabahBackground.png');
   return (
-    <ImageBackground source={sabahBackground} resizeMode="center" style={{ flex: 1 }}>
+    <ImageBackground source={sabahBackground} resizeMode="center" style={{ flex: 1,backgroundColor:'#bfbebe' }}>
     <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text style={{ fontSize: 30, marginBottom: 20 }}>Day Phase</Text>
       

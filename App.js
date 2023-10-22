@@ -16,6 +16,7 @@ import TestScreen from './src/screens/TestScreen';
 
 import { Provider } from 'react-redux';
 import { store } from './src/screens/store';
+import OyunSonuScreen from './src/screens/OyunSonuScreen';
 
 
 const Stack = createStackNavigator();
@@ -36,6 +37,7 @@ export default function App() {
           <Stack.Screen name="CountDown" component={CountdownScreen} options={{ headerShown:false,gestureEnabled:false}} />
           <Stack.Screen name="Vote" component={VotingPhaseScreen} options={{ headerShown:false,gestureEnabled:false}} />
           <Stack.Screen name="Elimination" component={EliminationScreen} options={{ headerShown:false,gestureEnabled:false}} />
+          <Stack.Screen name="OyunSonu" component={OyunSonuScreen} options={{ headerShown:false,gestureEnabled:false}} />
         </Stack.Navigator>
       </NavigationContainer>
       </Provider>

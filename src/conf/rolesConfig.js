@@ -11,6 +11,9 @@ export const rolesConfig = {
     
   Hırsız: {
     displayName: 'Hırsız',
+    passiveAbility: (player) => {
+      player.hasMaymuncuk =true; 
+    },
     canTakeAction: true,
     description: 'Seçtiğin oyuncuyu soyup soğana çevir.',
   },
