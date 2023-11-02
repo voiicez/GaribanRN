@@ -36,23 +36,30 @@ const DayPhaseScreen = ({ route, navigation }) => {
   
   const sabahBackground=require('../assets/images/sabahBackground.png');
   return (
-    <ImageBackground source={sabahBackground} resizeMode="center" style={{ flex: 1,backgroundColor:'#bfbebe' }}>
-    <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ fontSize: 30, marginBottom: 20 }}>Day Phase</Text>
-      
-      {/* Conditionally render events or the "nothing happened" message */}
-      {nightEvents.length > 0 ? (
-        nightEvents.map((event, index) => (
-          <Text key={index}>{event}</Text>
-        ))
-      ) : (
-        <Text>Nothing happened last night.</Text>
-      )}
-
-      <Button title="Ready" onPress={() => navigation.navigate('CountDown', { actions, roles, updatedPlayer })} />
-    </SafeAreaView>
+    <ImageBackground source={sabahBackground} resizeMode="center" style={{ flex: 1, backgroundColor: '#bfbebe' }}>
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={{ alignItems: 'center', marginBottom: 20 }}>
+          <Text style={{ fontSize: 30 }}>Sabah Oldu</Text>
+        </View>
+  
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          {/* Conditionally render events or the "nothing happened" message */}
+          {nightEvents.length > 0 ? (
+            nightEvents.map((event, index) => (
+              <Text key={index}>{event}</Text>
+            ))
+          ) : (
+            <Text>Dün Gece Bir Olay Yaşanmadı.</Text>
+          )}
+        </View>
+  
+        <View style={{ marginBottom: 20 }}>
+          <Button title="Ready" onPress={() => navigation.navigate('CountDown', { actions, roles, updatedPlayer })} />
+        </View>
+      </SafeAreaView>
     </ImageBackground>
   );
+  
   };
   
 export default DayPhaseScreen;

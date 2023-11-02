@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, Button,TouchableOpacity,Image,ScrollView } from 'react-native';
+import { View, Text, Button,TouchableOpacity,Image,ScrollView,ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import cardImage from '../assets/images/votingCard.png';
 const VotingPhaseScreen = ({ navigation, route }) => {
   const [votes, setVotes] = useState(route.params.roles.map(() => 0));
   const roles = route.params.roles;
   const updatedPlayer = route.params.updatedPlayer;
-
+  const background=require('../assets/images/background.png');
   const castVote = (index) => {
     const newVotes = [...votes];
     newVotes[index]++;
@@ -21,6 +21,7 @@ const VotingPhaseScreen = ({ navigation, route }) => {
   };
 
   return (
+    <ImageBackground source={background} resizeMode="contain" style={{ flex: 1,backgroundColor:'#bfbebe' }}>
     <SafeAreaView style={{ flex: 1, padding: 20 }}>
       <Text style={{ fontSize: 20, marginBottom: 10,textAlign:'center' }}>Elemek istediğiniz oyuncuyu oylayın.</Text>
       <ScrollView>
@@ -40,6 +41,7 @@ const VotingPhaseScreen = ({ navigation, route }) => {
         <Button title="End Voting" onPress={endVoting} />
       </ScrollView>
     </SafeAreaView>
+    </ImageBackground>
   );
 };
 
