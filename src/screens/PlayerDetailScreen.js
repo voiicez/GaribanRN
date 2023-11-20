@@ -103,6 +103,7 @@ const cinayetAction = (selectedPlayerToKill) => {
 const hirsizBackground = require('../assets/images/hirsizBg.png');
 const garibanBackground = require('../assets/images/garibanBg.jpg');
 const katilBackground=require('../assets/images/katil.png');
+const doktorBackground=require('../assets/images/doktorBg.jpg');
 
 const renderContent = () => (
   <SafeAreaView style={styles.container}>
@@ -179,6 +180,13 @@ if(player.role ==='Gariban'){
 if(player.role==='Katil'){
   return(
     <ImageBackground source={katilBackground} resizeMode="contain" style={{flex:1,backgroundColor:'#bfbebe'}}>
+      {renderContent()}
+      </ImageBackground>
+  );
+}
+if(player.role==='Doktor'){
+  return(
+    <ImageBackground source={doktorBackground} resizeMode="contain" style={{flex:1,backgroundColor:'#bfbebe'}}>
       {renderContent()}
       </ImageBackground>
   );

@@ -44,6 +44,7 @@ const PlayerTurnScreen = ({ navigation, route }) => {
   const moveNext = () => {
     if (currentPlayerIndex < roles.length - 1) {
         setCurrentPlayerIndex(currentPlayerIndex + 1);
+        
     } else {
         endRound();
     }
@@ -55,7 +56,7 @@ useEffect(() => {
     navigation.navigate('Day', { actions, roles: updatedRoles });
     setRoundEnded(false); // Reset for the next round
   }
-}, [roundEnded, updatedRoles, navigatedFromMarket, navigation,roles]);
+}, [roundEnded, navigatedFromMarket, navigation,roles,updatedRoles]);
 
 
 

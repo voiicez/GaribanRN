@@ -35,6 +35,9 @@ const ReadyScreen = ({ navigation, route }) => {
       if (roles[index] === 'Hırsız') {
           playerObj.hasMaymuncuk = true;
       }
+      if(roles[index]==='Katil'){
+        playerObj.hasCinayetAleti=true;
+      }
   
       return playerObj;
   });

@@ -37,7 +37,7 @@ const OyuncuEkrani = ({navigation}) => {
   };
 
   const getRandomName = () => {
-    const names = ["Turşu", "Lastik", "Fıstık", "Limon", "Fırtına", "Seri Bıçak","Mantıklı","Şah Mat","Kedigöz","Ilık Su","Ürperti","Patates Fındık","Levye","Aşık","Optimus","Üstad","Salamcı","Simit","Deri Kapak","Cesur","Pilot","Sanrı","Lacivert","Kulak","Burun","Fazla","Turuncu","Parşomen","Tohum","Kekik"]; 
+    const names = ["Turşu", "Lastik", "Fıstık", "Limon", "Fırtına", "Seri Bıçak","Mantıklı","Şah Mat","Kedigöz","Ilık Su","Ürperti","Patates Fındık","Levye","Aşık","Optimus","Üstad","Salamcı","Simit","Deri Kapak","Cesur","Pilot","Uzman","Lacivert","Kulak","Burun","Fazla","Turuncu","Parşomen","Tohum","Kekik"]; 
     const randomIndex = Math.floor(Math.random() * names.length);
     return names[randomIndex];
   };

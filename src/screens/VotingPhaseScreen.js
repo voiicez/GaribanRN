@@ -29,7 +29,7 @@ const VotingPhaseScreen = ({ navigation, route }) => {
           {roles.map((player, index) => (
             <View key={index} style={{ width: '48%', marginBottom: 10, alignItems: 'center' }}>
               <TouchableOpacity onPress={() => castVote(index)} style={{ position: 'relative' }}>
-                <Image source={cardImage} style={{ width: 150, height: 150 }} />
+                <Image source={cardImage} style={{ width: 150, height: 150,shadowOpacity:1,shadowRadius:2,shadowColor:"#000" }} />
                 <View style={{ position: 'absolute', bottom: 7, left: 0, right: 0, flexDirection: 'row', justifyContent: 'center' }}>
                   <Text style={{ fontSize: 18, color: 'white' }}>{player.name}</Text>
                 </View>

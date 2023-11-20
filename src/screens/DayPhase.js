@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Button,SafeAreaView,ImageBackground, Alert } from 'react-native';
-import {useEffect} from 'react'; 
+import {useEffect,useState} from 'react'; 
 import { useSelector } from 'react-redux';
 import { setNavigatedFromMarket } from './navigationSlice';
 import { useDispatch } from 'react-redux';
@@ -15,6 +15,7 @@ const DayPhaseScreen = ({ route, navigation }) => {
     const updatedPlayer=route.params.updatedPlayer;
     const navigatedFromMarket = useSelector(state => state.navigation.navigatedFromMarket);
     const nightEvents = useSelector(state => state.game.nightEvents);
+    const [updatedRoles, setUpdatedRoles] = useState(roles);
     
     useEffect(() => {
       
@@ -31,6 +32,57 @@ const DayPhaseScreen = ({ route, navigation }) => {
       }
     
 }, []);
+
+useEffect(() => {
+  applyActions();
+}, []);
+
+const applyActions = () => {
+  let tempRoles = [...roles];
+  console.log("[DAY PHASE SCREEN] Starting applyActions function");
+
+  actions.forEach(action => {
+    console.log("Processing action:", action);
+
+    switch (action.type) {
+      case 'rob':
+        processRobAction(action, tempRoles);
+        break;
+      case 'kill':
+        processKillAction(action, tempRoles);
+        break;
+      default:
+        console.log("Unknown action type:", action.type);
+    }
+  });
+
+  console.log("[DAY PHASE SCREEN] Finished processing all actions. Updated roles:", tempRoles);
+  setUpdatedRoles(tempRoles);
+  // Update the state or context with the new roles
+  // dispatch(updateRoles(tempRoles)); // Example dispatch to update roles in the global state
+};
+
+const processRobAction = (action, roles) => {
+  const robber = action.player;
+  const target = action.target;
+  const robbedPlayerIndex = roles.findIndex(p => p.name === target);
+  const robbedPlayer = roles[robbedPlayerIndex];
+  const stolenCoins = robbedPlayer.coins;
+  robbedPlayer.coins = 0;
+  robber.coins += stolenCoins;
+  roles[robbedPlayerIndex] = robbedPlayer;
+  console.log(`${robber.name} robbed ${target}. Stolen coins: ${stolenCoins}`);
+};
+
+const processKillAction = (action, roles) => {
+  const killer = action.player;
+  const target = action.target;
+  const targetIndex = roles.findIndex(p => p.name === target);
+  if (targetIndex !== -1) {
+    roles.splice(targetIndex, 1); // Remove the killed player
+    console.log(`${killer.name} killed ${target}.`);
+  }
+};
 
 
   
@@ -54,7 +106,7 @@ const DayPhaseScreen = ({ route, navigation }) => {
         </View>
   
         <View style={{ marginBottom: 20 }}>
-          <Button title="Ready" onPress={() => navigation.navigate('CountDown', { actions, roles, updatedPlayer })} />
+          <Button title="Ready" onPress={() => navigation.navigate('CountDown', { actions, roles:updatedRoles, updatedPlayer })} />
         </View>
       </SafeAreaView>
     </ImageBackground>

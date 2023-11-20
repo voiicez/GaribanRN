@@ -56,7 +56,7 @@ const MarketScreen = ({ navigation, route }) => {
       if(isLastPlayerTurn){
         console.log("[MARKET SCREEN] Last player used purchase, navigating to the day screen.")
         dispatch(setNavigatedFromMarket(true));
-        navigation.navigate('Day', {roles:updatedRoles,player:updatedPlayer });
+        navigation.navigate('Day', {roles:updatedRoles,player:updatedPlayer,actions });
       }
       else{
         navigation.navigate('PlayerTurn', { roles: updatedRoles,player:updatedPlayer }); // Pass the updated roles array
