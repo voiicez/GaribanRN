@@ -86,14 +86,10 @@ const robAction = (selectedPlayerToRob) => {
 const cinayetAction = (selectedPlayerToKill) => {
   if (selectedPlayerToKill) {
     if(player.hasCinayetAleti){
-      if(!selectedPlayerToKill.hasBuff){
       const newAction = { player: player, type: 'kill', target: selectedPlayerToKill};
         player.hasCinayetAleti=false;
         navigation.goBack();
-        takeAction(newAction);}
-        else{
-          console.log("Bu düşman korunmuş.")
-        }
+        takeAction(newAction);     
     }else{
       Alert.alert("Cinayet aleti olmadan öldüremezsin!");
     }
@@ -106,6 +102,7 @@ const cinayetAction = (selectedPlayerToKill) => {
 const doctorAction=(selectedPlayerToSave)=>{
   if(selectedPlayerToSave){
     const newAction={player:player,type:'save',target:selectedPlayerToSave};
+    
     navigation.goBack();
     takeAction(newAction);
   }else{

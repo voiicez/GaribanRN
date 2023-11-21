@@ -42,15 +42,22 @@ const applyActions = () => {
   let tempRoles = [...roles];
   console.log("[DAY PHASE SCREEN] Starting applyActions function");
 
-  actions.forEach(action => {
+  // Önce 'save' eylemlerini işle
+  actions.filter(action => action.type === 'save').forEach(action => {
+    console.log("Processing save action:", action);
+    processSaveAction(action, tempRoles);
+  });
+
+  // Sonra 'save' dışındaki diğer eylemleri işle
+  actions.filter(action => action.type !== 'save').forEach(action => {
     console.log("Processing action:", action);
 
     switch (action.type) {
-      case 'rob':
-        processRobAction(action, tempRoles);
-        break;
       case 'kill':
         processKillAction(action, tempRoles);
+        break;
+      case 'rob':
+        processRobAction(action, tempRoles);
         break;
       default:
         console.log("Unknown action type:", action.type);
@@ -80,12 +87,29 @@ const processKillAction = (action, roles) => {
   const killer = action.player;
   const target = action.target;
   const targetIndex = roles.findIndex(p => p.name === target);
+  const targetPlayer=roles[targetIndex];
   if (targetIndex !== -1) {
-    roles.splice(targetIndex, 1); // Remove the killed player
+    if(!targetPlayer.hasBuff)
+    {  
+      roles.splice(targetIndex, 1); 
     console.log(`${killer.name} killed ${target}.`);
+    dispatch(addNightEvent("Dün gece bir cinayet işlendi. "+target +" hayatını kaybetti."));
+  }else{
+    targetPlayer.hasBuff=false;
+    console.log(killer.name+" , "+target+" isimli oyuncuyu hedef aldı ama bir doktor onu korumuştu.");
   }
-  dispatch(addNightEvent("Dün gece bir cinayet işlendi. "+target +" hayatını kaybetti."));
+  
+  }
+  
 };
+
+const processSaveAction=(action,roles)=>{
+  const target=action.target;
+  const targetIndex=roles.findIndex(p=>p.name===target);
+  savedPlayer=roles[targetIndex];
+  savedPlayer.hasBuff=true;
+  console.log(savedPlayer.name+" korundu. "+ savedPlayer.hasBuff);
+}
 
 
   
