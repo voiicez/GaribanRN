@@ -6,15 +6,20 @@ const EliminationScreen = ({ navigation, route }) => {
   const roles = route.params.roles;
   const updatedPlayer=route.params.updatedPlayer;
   const katilCanli=roles.some(player=>player.role==='Katil');
+  const jesterCanli=roles.some(player=>player.role==='Jester');
 
   function handeClick(){
     if(!katilCanli){
       
       navigation.navigate('OyunSonu');
-    }else
+    }else if(eliminatedPlayer.role==='Jester'){
+      navigation.navigate('OyunSonu');
+    }
+    else
     {
       navigation.navigate('Night',{roles,updatedPlayer});
     }
+    
   }
   
   

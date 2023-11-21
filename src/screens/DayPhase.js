@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { setNavigatedFromMarket } from './navigationSlice';
 import { useDispatch } from 'react-redux';
 import { clearNightEvents } from './gameSlice';
+import { addNightEvent } from './gameSlice';
 
 // Inside DayPhaseScreen component
 const DayPhaseScreen = ({ route, navigation }) => {
@@ -18,7 +19,7 @@ const DayPhaseScreen = ({ route, navigation }) => {
     const [updatedRoles, setUpdatedRoles] = useState(roles);
     
     useEffect(() => {
-      
+      console.log("Day phase dispatch use effect çalışıyor.");
       dispatch(setNavigatedFromMarket(false));
       return () => {
         dispatch(clearNightEvents());
@@ -72,6 +73,7 @@ const processRobAction = (action, roles) => {
   robber.coins += stolenCoins;
   roles[robbedPlayerIndex] = robbedPlayer;
   console.log(`${robber.name} robbed ${target}. Stolen coins: ${stolenCoins}`);
+  dispatch(addNightEvent("Dün gece bir soygun yaşandı."));
 };
 
 const processKillAction = (action, roles) => {
@@ -82,6 +84,7 @@ const processKillAction = (action, roles) => {
     roles.splice(targetIndex, 1); // Remove the killed player
     console.log(`${killer.name} killed ${target}.`);
   }
+  dispatch(addNightEvent("Dün gece bir cinayet işlendi. "+target +" hayatını kaybetti."));
 };
 
 

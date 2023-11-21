@@ -12,7 +12,7 @@ const MarketScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const availableRoles = [
     { name: 'Doktor', cost: 30 },
-    { name: 'Gariban', cost: 30 },
+    { name: 'Jester', cost: 30 },
   ];
 
   const otherItems = [

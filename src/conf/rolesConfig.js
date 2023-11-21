@@ -26,6 +26,11 @@ export const rolesConfig = {
     displayName:'Doktor',
     canTakeAction:true,
     description:'Birinin hayatını kurtar.',
+  },
+   Jester: {
+    displayName: 'Jester',
+    canTakeAction: true,
+    description: 'Ölmekten keyif alan bir manyaksın. Oylamada ölürsen oyunu kazanırsın!',
   }
   };
   

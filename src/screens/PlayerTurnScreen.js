@@ -33,9 +33,6 @@ const PlayerTurnScreen = ({ navigation, route }) => {
     setActions(prevActions => {
         const updatedActions = [...prevActions, newAction];
         console.log("[PLAYERTURN SCREEN] Updated actions array:", updatedActions);
-        if (currentPlayerIndex === roles.length - 1) { // Check if it's the last player
-            applyActions(updatedActions);  // Apply the actions immediately
-        }
         return updatedActions;
     });
     moveNext();
@@ -56,6 +53,9 @@ useEffect(() => {
     navigation.navigate('Day', { actions, roles: updatedRoles });
     setRoundEnded(false); // Reset for the next round
   }
+  else{
+    console.log("Round Ended Log:  "+ roundEnded+" navigatedFromMarket Log: " + navigatedFromMarket)
+  }
 }, [roundEnded, navigatedFromMarket, navigation,roles,updatedRoles]);
 
 
@@ -64,7 +64,7 @@ useEffect(() => {
 
 const endRound = () => {
   console.log("[PLAYERTURN SCREEN] endRound is being called for player:", currentPlayer.name);
-  applyActions();
+  
   setCurrentPlayerIndex(0);
   setPlayersTurnCompleted(Array(roles.length).fill(false));
   setRoundEnded(true);
@@ -90,39 +90,7 @@ const endRound = () => {
 };
   
 const applyActions = () => {
-  let tempRoles = [...updatedRoles];
-  console.log("[PLAYERTURN SCREEN] Starting applyActions function");
-
-  for (let i = 0; i < actions.length; i++) {
-      const action = actions[i];
-      console.log("Checking action type for:", action);
-
-      if (action.type === 'rob') {
-          console.log("Processing rob action for:", action.player.name);
-          dispatch(addNightEvent("Dün gece bir soygun yaşandı."));
-          const robber = action.player;
-          const target = action.target;
-          const robbedPlayerIndex = roles.findIndex(p => p.name === target);
-          const robbedPlayer = roles[robbedPlayerIndex];
-          const stolenCoins = robbedPlayer.coins;
-          robbedPlayer.coins = 0;
-          robber.coins += stolenCoins;
-          tempRoles[robbedPlayerIndex] = robbedPlayer;
-          console.log(`${robber.name} robbed ${target}. Stolen coins: ${stolenCoins}`);
-      } else if (action.type === 'kill') {
-          console.log("Processing kill action for:", action.player.name);
-          dispatch(addNightEvent("Dün gece bir cinayet işlendi."));
-          const killer = action.player;
-          const target = action.target;
-          tempRoles = tempRoles.filter(p => p.name !== target);
-          console.log(`${killer.name} killed ${target}.`);
-      } else {
-          console.log("Unknown action type:", action.type);
-      }
-  }
-
-  console.log("[PLAYERTURN SCREEN] Finished processing all actions. Updated roles:", tempRoles);
-  setUpdatedRoles(tempRoles);
+  //Şimdilik dayPhase' e taşındı.
 };
 
 

@@ -16,6 +16,7 @@ const PlayerDetailScreen = ({ navigation, route }) => {
   const actions=route.params.actions;
   const [selectedPlayerToRob, setSelectedPlayerToRob] = useState(null);
   const [selectedPlayerToKill, setSelectedPlayerToKill] = useState(null);
+  const [selectedPlayerToSave, setSelectedPlayerToSave] = useState(null);
   const otherPlayers = roles.filter(p => p.name !== player.name);
   const robberyOccurred=route.params.robberyOccurred;
   const updatedPlayer=route.params.updatedPlayer;
@@ -85,15 +86,29 @@ const robAction = (selectedPlayerToRob) => {
 const cinayetAction = (selectedPlayerToKill) => {
   if (selectedPlayerToKill) {
     if(player.hasCinayetAleti){
+      if(!selectedPlayerToKill.hasBuff){
       const newAction = { player: player, type: 'kill', target: selectedPlayerToKill};
         player.hasCinayetAleti=false;
         navigation.goBack();
-        takeAction(newAction);
+        takeAction(newAction);}
+        else{
+          console.log("Bu düşman korunmuş.")
+        }
     }else{
       Alert.alert("Cinayet aleti olmadan öldüremezsin!");
     }
    
   } else {
+    Alert.alert('Aksiyonu uygulayacak birini seçmelisin.');
+  }
+}
+
+const doctorAction=(selectedPlayerToSave)=>{
+  if(selectedPlayerToSave){
+    const newAction={player:player,type:'save',target:selectedPlayerToSave};
+    navigation.goBack();
+    takeAction(newAction);
+  }else{
     Alert.alert('Aksiyonu uygulayacak birini seçmelisin.');
   }
 }
@@ -140,19 +155,40 @@ const renderContent = () => (
            dropdownStyles={styles.dropdown}
            search={false}
            placeholder='Kurbanı seçin.'
-           
          />
        </View>
        
      </View>
           
         
-      ) : null} 
+      ) : null}       
+             {player.role === 'Doktor' ? (
+       
+       <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start',zIndex:10 }}>
+       <View> 
+         <SelectList
+           setSelected={(val) => setSelectedPlayerToSave(val)}
+           data={otherPlayers.map(p => ({ key: p.name, value: p.name }))}
+           save="value"
+           dropdownStyles={styles.dropdown}
+           search={false}
+           placeholder='Hedefi seçin.'
+         />
+       </View>
+       
+     </View>
+          
+        
+      ) : null}   
+     
         {player.role !== 'Gariban' && player.role==='Hırsız' &&(
           <Button title="Aksiyon Al" onPress={() => { robAction(selectedPlayerToRob); }} />
         )}
         {player.role !== 'Gariban' && player.role==='Katil' && (
           <Button title="Aksiyon Al" onPress={() => { cinayetAction(selectedPlayerToKill); }} />
+        )}
+        {player.role==='Doktor' && (
+          <Button title="Aksiyon Al" onPress={() => { doctorAction(selectedPlayerToSave); }} />
         )}
       
       <Button title="Pass" onPress={() => { navigation.goBack(); passAction(); }} />
@@ -189,6 +225,13 @@ if(player.role==='Doktor'){
     <ImageBackground source={doktorBackground} resizeMode="contain" style={{flex:1,backgroundColor:'#bfbebe'}}>
       {renderContent()}
       </ImageBackground>
+  );
+}
+if(player.role ==='Jester'){
+  return (
+    <ImageBackground source={garibanBackground} resizeMode="contain" style={{ flex: 1,backgroundColor:'#bfbebe' }}>
+      {renderContent()}
+    </ImageBackground>
   );
 }
 else {
