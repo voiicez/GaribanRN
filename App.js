@@ -26,7 +26,7 @@ export default function App() {
       <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Giris">
-          <Stack.Screen name="Giris" component={GirisEkrani} />
+          <Stack.Screen name="Giris" component={GirisEkrani} options={{headerShown:false}} />
           <Stack.Screen name="OyuncuEkrani" component={OyuncuEkrani} />
           <Stack.Screen name="Ready" component={ReadyScreen} />
           <Stack.Screen name="Night" component={NightPhaseScreen} options={{ headerShown:false,gestureEnabled:false}} />
